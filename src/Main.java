@@ -12,8 +12,6 @@ public class Main {
         int[][] mat = randomizeMatrix();
         System.out.println("Original randomized matrix:");
         printMatrix(mat);
-        System.out.println("Matrix sorted through bins:");
-        printMatrix(binSort(mat));
         System.out.println("Matrix bubble sort");
         bubbleSort(mat);
         printMatrix(mat);
@@ -36,15 +34,24 @@ public class Main {
     }
 
     public static void bubbleSort(int[][] mat) {
+        if (mat.length == 0) {
+            return;
+        }
         boolean sorted = false;
         while(!sorted) {
             sorted = true;
-            for (int i = 0; i < matrix_size * matrix_size - 1; i++) {
-                if (mat[i / matrix_size][i % matrix_size] < mat[(i+1) /matrix_size][(i+1) % matrix_size]) {
-                    sorted = false;
-                    int temp = mat[i / matrix_size][i % matrix_size];
-                    mat[i / matrix_size][i % matrix_size] = mat[(i+1) / matrix_size][(i+1) % matrix_size];
-                    mat[(i+1) / matrix_size][(i+1) % matrix_size] = temp;
+            int prev = mat[0][0];
+            for (int i = 0; i < matrix_size; i++) {
+                for (int j = 0; j < matrix_size; j++) {
+                    if (mat[i][j] < prev) {
+                        sorted = false;
+                        // if j is first element in the row, need to modify last element in previous row
+                        int x = (j-1 > -1) ? i : i-1;
+                        int y = (j-1 > -1) ? j-1 : matrix_size - 1;
+                        mat[x][y] = mat[i][j];
+                        mat[i][j] = prev;
+                    }
+                    prev = mat[i][j];
                 }
             }
         }
