@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class Main {
 
-    private final static Random rand = new Random(System.currentTimeMillis());;
+    private final static Random rand = new Random(System.currentTimeMillis());
     private final static int lower_bound = 10;
     private final static int upper_bound = 99;
     private final static int matrix_size = 10;
@@ -14,6 +14,9 @@ public class Main {
         printMatrix(mat);
         System.out.println("Matrix sorted through bins:");
         printMatrix(binSort(mat));
+        System.out.println("Matrix bubble sort");
+        bubbleSort(mat);
+        printMatrix(mat);
     }
 
     public static int[][] randomizeMatrix() {
@@ -29,6 +32,21 @@ public class Main {
     public static void printMatrix(int[][] mat) {
         for (int[] ints : mat) {
             System.out.println(Arrays.toString(ints));
+        }
+    }
+
+    public static void bubbleSort(int[][] mat) {
+        boolean sorted = false;
+        while(!sorted) {
+            sorted = true;
+            for (int i = 0; i < matrix_size * matrix_size - 1; i++) {
+                if (mat[i / matrix_size][i % matrix_size] < mat[(i+1) /matrix_size][(i+1) % matrix_size]) {
+                    sorted = false;
+                    int temp = mat[i / matrix_size][i % matrix_size];
+                    mat[i / matrix_size][i % matrix_size] = mat[(i+1) / matrix_size][(i+1) % matrix_size];
+                    mat[(i+1) / matrix_size][(i+1) % matrix_size] = temp;
+                }
+            }
         }
     }
 
