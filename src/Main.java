@@ -2,21 +2,26 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Main {
+
+    private final static Random rand = new Random(System.currentTimeMillis());
+    private final static int lower_bound = 10;
+    private final static int upper_bound = 99;
+    private final static int matrix_size = 10;
+
     public static void main(String[] args) {
         int[][] mat = randomizeMatrix();
         System.out.println("Original randomized matrix:");
         printMatrix(mat);
-        System.out.println("Matrix sorted through bins:");
-        printMatrix(binSort(mat));
-
+        System.out.println("Matrix bubble sort");
+        bubbleSort(mat);
+        printMatrix(mat);
     }
 
     public static int[][] randomizeMatrix() {
-        int[][] randMatrix = new int[10][10];
-        Random rand = new Random();
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                randMatrix[i][j] = rand.nextInt(89) + 10; // couldn't find lower bound definition
+        int[][] randMatrix = new int[matrix_size][matrix_size];
+        for (int i = 0; i < matrix_size; i++) {
+            for (int j = 0; j < matrix_size; j++) {
+                randMatrix[i][j] = rand.nextInt(upper_bound - lower_bound) + lower_bound;
             }
         }
         return randMatrix;
@@ -25,6 +30,30 @@ public class Main {
     public static void printMatrix(int[][] mat) {
         for (int[] ints : mat) {
             System.out.println(Arrays.toString(ints));
+        }
+    }
+
+    public static void bubbleSort(int[][] mat) {
+        if (mat.length == 0) {
+            return;
+        }
+        boolean sorted = false;
+        while(!sorted) {
+            sorted = true;
+            int prev = mat[0][0];
+            for (int i = 0; i < matrix_size; i++) {
+                for (int j = 0; j < matrix_size; j++) {
+                    if (mat[i][j] < prev) {
+                        sorted = false;
+                        // if j is first element in the row, need to modify last element in previous row
+                        int x = (j-1 > -1) ? i : i-1;
+                        int y = (j-1 > -1) ? j-1 : matrix_size - 1;
+                        mat[x][y] = mat[i][j];
+                        mat[i][j] = prev;
+                    }
+                    prev = mat[i][j];
+                }
+            }
         }
     }
 
